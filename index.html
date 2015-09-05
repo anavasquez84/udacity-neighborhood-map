@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset = "UFT-8">
+		<title>Sunset Park</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<link href="css/style.css" rel="stylesheet">
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+		rel="stylesheet">
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class= "col-md-12 border" id="title">
+					<h1 class="text-left">Sunset Park</h1>
+				</div><!--End of Col-md-12-->
+			</div><!--End of row-->
+			<div class="row">
+				<div class="col-md-12 border" id="map">
+				</div><!--End of Col-md-12-->
+			</div><!--End of Row-->
+			<div class="row">
+				<div class="col-md-12 border" id="boxed">
+					<h4>USE THIS SEARCH BOX TO SORT LOCATIONS</h4>
+					<input type="text" class="form-control" data-bind="textInput: filter, valueUpdate: 'keyup'">
+				</div><!--End of col-md-12-->
+			</div><!--End of Row-->
+			<div class="row">
+				<div class="col-md-12 border" id="title">
+					<h4>LOCATIONS</h4>
+				</div><!--End of col-md-12-->
+			</div><!--End of Row-->
+			<div class="row">
+				<div class="col-md-12 border">
+					<ul class="list-unstyled" data-bind="foreach: filterList()">
+						<li data-bind="text:name"></li>
+					<ul>
+				</div><!--End of col-md-12-->
+			</div><!--End of Row-->
+		</div><!--End of Container-->
+		<script src="js/jquery-1.11.3.min.js"></script>
+		<script src="js/knockout-3.3.0.js"></script>
+		<script src="http://maps.googleapis.com/maps/api/js?libraries=places"></script>
+		<!--<script src="js/app.js"></script>-->
+		<script src="js/app.js"></script>
+	</body>
+</html>
