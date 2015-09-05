@@ -1,13 +1,6 @@
-<<<<<<< HEAD
-// GLOBAL VARIABLES
-var map, infowindow, marker;
-
-||||||| merged common ancestors
-=======
 //GLOBAL VARIABLES
 var map, infowindow, marker, sunsetLocations; 
 
->>>>>>> dae83bd9a1c529735356d6438d632dad6283fbef
 //ARRAY FOR PUSHING DATA
 var markerArray = [];
 
