@@ -41,7 +41,6 @@ sunsetLocations =[{
     markerID: 4
 }];
 
-
 //VIEWMODEL
 function mapViewModel(){
     "use strict";
@@ -59,8 +58,7 @@ function mapViewModel(){
         for(var i = 0; i < sunsetLocations.length; i++){
                 marker = new google.maps.Marker({
                 position: new google.maps.LatLng(sunsetLocations[i].lat, + sunsetLocations[i].lng),
-                title: '<h5>' + sunsetLocations[i].name + '</h5>' +
-                '<p>' + sunsetLocations[i].description + '</p>',
+                title: '<h5>' + sunsetLocations[i].name + '</h5>' ,
                 map:map
             });
 //CREATE CLICK EVENT FOR INFO WINDOWS AND ACTIVE MARKERS
@@ -124,5 +122,27 @@ function mapViewModel(){
 
 };//CLOSES mapViewModel
 
+//NYT API
+function loadNYT(){
+    var $nytArticles = $('#articles');
+    var $nytError = $('#header');
+//TO IMPROVE ACCURACY, ARTICLES ARE FILTERED FOR THE PHRASES "Sunset Park" AND "Sunset Park, Brooklyn"
+    var nytURL ='http://api.nytimes.com/svc/search/v2/articlesearch.json?q=sunset+park&fq=body:("Sunset Park" "Sunset Park, Brooklyn")&sort=newest&api-key=051686fb33bb44295c74cb6d9342fda8:16:66553471'
+
+    $.getJSON(nytURL, function(data){
+            articles = data.response.docs;
+            for(var i =0; i<articles.length;i++){
+                var article = articles[i];
+                $nytArticles.append('<a href="'+ article.web_url + '">'
+                    + article.headline.main +'</a>'+ '<p>' + article.snippet + '</p>');
+            };
+//ERROR HANDLING
+    }) .error(function(e){
+        $nytError.text('Articles Could Not Be Loaded :(');
+    });
+    return false;
+};
+
+loadNYT();
 ko.applyBindings(new mapViewModel());
 
