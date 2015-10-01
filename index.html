@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset = "UFT-8">
+		<meta charset="utf-8">
 		<title>Sunset Park</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-		<style>body,html{height:100%;margin:0;padding:0}#map{width:100%;height:25vh}.border{border:1px solid #000}#boxed{display:block;padding:1.5em}.title{background-color:#191919;color:#FFF}</style>
+		<style>body,html{height:100%;margin:0;padding:0}#map{width:100%;height:50vh}.border{border:1px solid #000}#boxed{display:block;padding:1.5em}.title{background-color:#191919;color:#FFF}dt:hover{color:#337AB7;}</style>
 	</head>
 	<body>
 		<div class="container">
@@ -32,18 +32,10 @@
 			<div class="row">
 				<div class="col-md-12 border">
 					<dl class="list-unstyled" data-bind="foreach: filterList()">
-						<dt data-bind="text:name"></dt>
-						<dd data-bind="text:description"></dd>
-					<dl>
-				</div><!--End of col-md-12-->
-			</div><!--End of Row-->
-			<div class="row">
-				<div class="col-md-12 border title" id="header">
-					<h4>NEW YORK TIMES ARTICLES ABOUT SUNSET PARK</h4>
-				</div><!--End of col-md-12-->
-			</div><!--End of Row-->
-			<div class="row">
-				<div class="col-md-12 border" id="articles">
+						<dt>
+							<span data-bind="text: name, click: $parent.listView"></span>
+						</dt>
+					</dl>
 				</div><!--End of col-md-12-->
 			</div><!--End of Row-->
 		</div><!--End of Container-->

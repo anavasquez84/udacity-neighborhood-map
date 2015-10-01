@@ -1,11 +1,11 @@
 //GLOBAL VARIABLES
+"use strict";
 var map, infowindow, marker, sunsetLocations; 
-
 //ARRAY FOR PUSHING DATA
 var markerArray = [];
 
 //DATA
-sunsetLocations =[{
+sunsetLocations = [{
     name: 'Tacos El Bronco',
     lat: 40.6502,
     lng: -74.0093,
@@ -41,47 +41,69 @@ sunsetLocations =[{
     markerID: 4
 }];
 
-//VIEWMODEL
-function mapViewModel(){
-    "use strict";
-    var self = this;
 
 //CREATE MAP
-    var initMap =function(){
+    var initMap = function(){
         var mapOptions = {
             center: {lat: 40.6456, lng:-74.0119},
             zoom: 13
         };
         map = new google.maps.Map(document.getElementById('map'), mapOptions);
         infowindow = new google.maps.InfoWindow();
+
 //CREATE MARKERS
         for(var i = 0; i < sunsetLocations.length; i++){
                 marker = new google.maps.Marker({
                 position: new google.maps.LatLng(sunsetLocations[i].lat, + sunsetLocations[i].lng),
-                title: '<h5>' + sunsetLocations[i].name + '</h5>' ,
+                title: '<h5>' + sunsetLocations[i].name + '</h5>' + 
+                '<p>' + sunsetLocations[i].description + '</p>',
                 map:map
             });
+
 //CREATE CLICK EVENT FOR INFO WINDOWS AND ACTIVE MARKERS
         google.maps.event.addListener(marker,'click',(function(marker){
             return function(){
                 marker.setAnimation(google.maps.Animation.BOUNCE); 
-                setTimeout(function(){ marker.setAnimation(null); }, 800);
+                setTimeout(function(){marker.setAnimation(null); }, 800);
                 infowindow.setContent(marker.title + "<div id='content'></div>");
                 infowindow.open(map, marker);
             };
         })(marker));
-        //PUSHES MARKERS INTO markerArray
+//RESIZING MAP
+    google.maps.event.addDomListener(window,'resize', function(){
+        var center = map.getCenter();
+        google.maps.event.trigger(map,'resize');
+        map.setCenter(center);
+    })
+//PUSHES MARKERS INTO markerArray
         markerArray.push(marker);
-         }; //CLOSES LOOP
+
+         }//CLOSES LOOP
     };//CLOSES initMap
 
-//FOR SORTING MARKERS
+//VIEWMODEL
+function mapViewModel(){
+    var self = this;
+
+//LOADS MAP
+    google.maps.event.addDomListener(window, 'load', initMap);
+
     self.locations = ko.observableArray(sunsetLocations);
+    self.markerArray = ko.observableArray(markerArray);
     self.filter = ko.observable('');
+
+//FUNCTION FOR CLICKING LISTVIEW
+    self.listView = function(locations){
+        var list = markerArray[locations.markerID];
+        infowindow.open(map, list);
+        infowindow.setContent(list.title + "<div id='content'></div>");
+        list.setAnimation(google.maps.Animation.BOUNCE); 
+        setTimeout(function(){list.setAnimation(null); }, 800);
+    };
 
 //FUNCTION FOR TOGGLING MARKERS
     self.markerToggle = function(toggle){
-        for(var i = 0; i <markerArray.length; i++){
+        for(var i = 0; i < markerArray.length; i++){
             markerArray[i].setMap(toggle);
         }
     };
@@ -94,7 +116,7 @@ function mapViewModel(){
 };
 //FUNCTION FOR DISPLAYING SELECTED MARKERS ON MAP
     self.selectedMarkers = function(filteredmarkers){
-    for(var i = 0; i <filteredmarkers.length; i++){
+    for(var i = 0; i < filteredmarkers.length; i++){
         markerArray[filteredmarkers[i].markerID].setMap(map);
         }
     };
@@ -112,37 +134,7 @@ function mapViewModel(){
             return filteredmarkers;
         }
     };
-
-    google.maps.event.addDomListener(window, 'load', initMap);
-    google.maps.event.addDomListener(window,'resize', function(){
-        var center = map.getCenter();
-        google.maps.event.trigger(map,'resize');
-        map.setCenter(center);
-    }); 
-
 };//CLOSES mapViewModel
 
-//NYT API
-function loadNYT(){
-    var $nytArticles = $('#articles');
-    var $nytError = $('#header');
-//TO IMPROVE ACCURACY, ARTICLES ARE FILTERED FOR THE PHRASES "Sunset Park" AND "Sunset Park, Brooklyn"
-    var nytURL ='http://api.nytimes.com/svc/search/v2/articlesearch.json?q=sunset+park&fq=body:("Sunset Park" "Sunset Park, Brooklyn")&sort=newest&api-key=051686fb33bb44295c74cb6d9342fda8:16:66553471'
-
-    $.getJSON(nytURL, function(data){
-            articles = data.response.docs;
-            for(var i =0; i<articles.length;i++){
-                var article = articles[i];
-                $nytArticles.append('<a href="'+ article.web_url + '">'
-                    + article.headline.main +'</a>'+ '<p>' + article.snippet + '</p>');
-            };
-//ERROR HANDLING
-    }) .error(function(e){
-        $nytError.text('Articles Could Not Be Loaded :(');
-    });
-    return false;
-};
-
-loadNYT();
 ko.applyBindings(new mapViewModel());
 
