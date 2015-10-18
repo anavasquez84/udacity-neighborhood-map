@@ -1,6 +1,10 @@
 //GLOBAL VARIABLES
 "use strict";
-var map, infowindow, marker, sunsetLocations; 
+var map, infowindow, marker, sunsetLocations;
+//FOURSQUARE REFERENCE
+var client_id = 'V24CMX5ULGGZAAEWUJU2PKYCAKOARENTL0VDFBLVWD2WCOU5';
+var client_secret = 'OYMORCCPFFYLII5GL4UDEH1WPZ4FMGXJX2AINNMSP4OY5GO1';
+var version = '20150915';
 //ARRAY FOR PUSHING DATA
 var markerArray = [];
 
@@ -9,36 +13,36 @@ sunsetLocations = [{
     name: 'Tacos El Bronco',
     lat: 40.6502,
     lng: -74.0093,
-    description:'The greatest tacos with the worst service',
-    markerID: 0
+    markerID: 0,
+    venueID: '4c9521df82b56dcbc5fbd5aa'
 },
 {
     name: 'Green-Wood Cemetery',
     lat: 40.6495,
     lng: -73.9923,
-    description:'Second most popular tourist destination of the 19th century',
-    markerID: 1
+    markerID: 1,
+    venueID: '4a8812c8f964a520140520e3'
 },
 {
     name: 'Brooklyn Public Library',
     lat: 40.6459,
     lng: -74.0135,
-    description:'Largest selection of Spanish language occult books',
-    markerID: 2
+    markerID: 2,
+    venueID: '4b5a00a7f964a52002a728e3'
 },
 {
     name:'Thanh Da',
     lat: 40.6366,
     lng: -74.0135,
-    description:'The best bahn mi and iced coffee',
-    markerID: 3
+    markerID: 3,
+    venueID: '4aaea05bf964a520aa6220e3'
 },
 {
     name:'Sunset Park',
     lat: 40.6480,
     lng: -74.0040,
-    description:'Highest point in Brooklyn',
-    markerID: 4
+    markerID: 4,
+    venueID: '4a4ff7a8f964a520ddaf1fe3'
 }];
 
 
@@ -55,8 +59,7 @@ sunsetLocations = [{
         for(var i = 0; i < sunsetLocations.length; i++){
                 marker = new google.maps.Marker({
                 position: new google.maps.LatLng(sunsetLocations[i].lat, + sunsetLocations[i].lng),
-                title: '<h5>' + sunsetLocations[i].name + '</h5>' + 
-                '<p>' + sunsetLocations[i].description + '</p>',
+                title: '<h5>' + sunsetLocations[i].name + '</h5>',
                 map:map
             });
 
@@ -65,8 +68,10 @@ sunsetLocations = [{
             return function(){
                 marker.setAnimation(google.maps.Animation.BOUNCE); 
                 setTimeout(function(){marker.setAnimation(null); }, 800);
-                infowindow.setContent(marker.title + "<div id='content'></div>");
+                //setTimeout(function(){infowindow.close(); }, 1400);
+                infowindow.setContent(marker.title);
                 infowindow.open(map, marker);
+
             };
         })(marker));
 //RESIZING MAP
@@ -84,10 +89,6 @@ sunsetLocations = [{
 //VIEWMODEL
 function mapViewModel(){
     var self = this;
-
-//LOADS MAP
-    google.maps.event.addDomListener(window, 'load', initMap);
-
     self.locations = ko.observableArray(sunsetLocations);
     self.markerArray = ko.observableArray(markerArray);
     self.filter = ko.observable('');
@@ -96,9 +97,10 @@ function mapViewModel(){
     self.listView = function(locations){
         var list = markerArray[locations.markerID];
         infowindow.open(map, list);
-        infowindow.setContent(list.title + "<div id='content'></div>");
+        infowindow.setContent(list.title);
         list.setAnimation(google.maps.Animation.BOUNCE); 
         setTimeout(function(){list.setAnimation(null); }, 800);
+        //setTimeout(function(){infowindow.close(); }, 1400);
     };
 
 //FUNCTION FOR TOGGLING MARKERS
@@ -134,7 +136,10 @@ function mapViewModel(){
             return filteredmarkers;
         }
     };
+
 };//CLOSES mapViewModel
 
+//LOADS MAP
+google.maps.event.addDomListener(window, 'load', initMap);
 ko.applyBindings(new mapViewModel());
 
