@@ -13,36 +13,31 @@ sunsetLocations = [{
     name: 'Tacos El Bronco',
     lat: 40.6502,
     lng: -74.0093,
-    markerID: 0,
-    venueID: '4c9521df82b56dcbc5fbd5aa'
+    markerID: 0
 },
 {
     name: 'Green-Wood Cemetery',
     lat: 40.6495,
     lng: -73.9923,
-    markerID: 1,
-    venueID: '4a8812c8f964a520140520e3'
+    markerID: 1
 },
 {
     name: 'Brooklyn Public Library',
     lat: 40.6459,
     lng: -74.0135,
-    markerID: 2,
-    venueID: '4b5a00a7f964a52002a728e3'
+    markerID: 2
 },
 {
     name:'Thanh Da',
     lat: 40.6366,
     lng: -74.0135,
-    markerID: 3,
-    venueID: '4aaea05bf964a520aa6220e3'
+    markerID: 3
 },
 {
     name:'Sunset Park',
     lat: 40.6480,
     lng: -74.0040,
-    markerID: 4,
-    venueID: '4a4ff7a8f964a520ddaf1fe3'
+    markerID: 4
 }];
 
 
